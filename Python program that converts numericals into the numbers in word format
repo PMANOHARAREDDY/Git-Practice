@@ -1,0 +1,89 @@
+units = {
+        0:'zero', 1:'one', 2:'two', 3:'three',
+        4:'four', 5:'five', 6:'six', 7:'seven',
+        8:'eight', 9:'nine'
+    }
+    
+teens = {
+        10:'ten', 11:'eleven', 12:'twelve',
+        13:'thirteen', 14:'fourteen', 15:'fifteen',
+        16:'sixteen', 17:'seventeen', 18:'eighteen',
+        19:'nineteen'
+    }
+    
+tens = {
+        10:'ten', 20:'twenty', 30:'thirty', 40:'forty',
+        50:'fifty', 60:'sixty', 70:'seventy',
+        80:'eighty', 90:'ninety'
+    }
+    
+scales = {
+        100: 'hundred',
+        1000: 'thousand',
+        1000000: 'million',
+    }
+    
+def unit(str_number):
+    if int(str_number) == 0:
+        return ''
+    return units[int(str_number)]
+
+def ten(str_number):
+    if int(str_number) in tens:
+        return tens[int(str_number)]
+    elif int(str_number) in teens:
+        return teens[int(str_number)] 
+    elif int(str_number[0])==0:
+        return unit(str_number[1])
+    else :
+        return tens[int(str_number[0])*10] +" "+ unit(str_number[1])
+
+def hundred(str_number):
+    if int(str_number) in scales:
+        return 'one '+scales[int(str_number)]
+    elif int(str_number[0])==0:
+        return ten(str_number[1:])
+    else:
+        return units[int(str_number[0])]+" hundred "+ ten(str_number[1:])
+
+def thousand(str_number):
+    if int(str_number) in scales:
+        return 'one '+scales[int(str_number)]
+    elif int(str_number[0])==0:
+        return hundred(str_number[1:])
+    else:
+        return units[int(str_number[0])]+" thousand "+ hundred(str_number[1:])
+
+def ten_thousand(str_number):
+    return ten(str_number[:2])+" thousand "+ hundred(str_number[2:])
+
+def hundred_thousand(str_number):
+    return hundred(str_number[:3])+" thousand "+ hundred(str_number[3:])
+
+def million(str_number):
+    if int(str_number) in scales:
+        return 'one '+scales[int(str_number)]
+    else:
+        return units[int(str_number[0])]+" million "+ hundred_thousand(str_number[1:])
+    
+def num_to_words(number):
+    str_number = str(number)
+    if len(str_number)==1 and str_number=='0':
+        return 'zero'
+    if len(str_number)==1:
+        return unit(str_number)
+    elif len(str_number)==2:
+        return ten(str_number)
+    elif len(str_number)==3:
+        return hundred(str_number)
+    elif len(str_number)==4:
+        return thousand(str_number)
+    elif len(str_number)==5:
+        return ten_thousand(str_number)
+    elif len(str_number)==6:
+        return hundred_thousand(str_number)
+    elif len(str_number)==7:
+        return million(str_number)
+
+if __name__ == '__main__':
+    print(num_to_words(int(input())))
